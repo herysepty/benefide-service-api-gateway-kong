@@ -30,11 +30,12 @@ services:
   #######################################
   kong-migration:
     image: kong:latest
-    command: "kong migrations up"
+    command: "kong migrations bootstrap"
     networks:
       - kong-net
     restart: on-failure
     environment:
+      KONG_DATABASE: postgres
       KONG_PG_HOST: kong-database
     links:
       - kong-database
@@ -50,6 +51,7 @@ services:
     networks:
       - kong-net
     environment:
+      KONG_DATABASE: postgres
       KONG_PG_HOST: kong-database
       KONG_PROXY_LISTEN: 0.0.0.0:8000
       KONG_PROXY_LISTEN_SSL: 0.0.0.0:8443
